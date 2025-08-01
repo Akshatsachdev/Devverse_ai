@@ -8,62 +8,63 @@
 
 @layer base {
   :root {
-    /* Spiritual Color Palette */
-    --parchment: 45 35% 92%;
-    --parchment-light: 45 40% 96%;
-    --golden: 45 95% 65%;
-    --golden-light: 45 85% 75%;
-    --golden-glow: 45 100% 80%;
-    --sage: 195 25% 65%;
-    --sage-light: 195 20% 85%;
-    --sage-dark: 195 35% 45%;
-    --earth: 25 35% 45%;
-    --earth-light: 25 25% 65%;
-    --earth-dark: 25 45% 25%;
+    /* Refined Spiritual Color Palette */
+    --ivory-sand: 45 45% 97%;
+    --soft-parchment: 42 25% 94%;
+    --saffron-gold: 45 100% 39%;
+    --sage-green: 150 15% 37%;
+    --deep-charcoal: 0 0% 17%;
+    --earth-brown: 28 35% 19%;
+    --light-almond: 45 60% 96%;
+    --chip-bg: 42 30% 87%;
+    --cta-start: 45 80% 94%;
+    --cta-end: 45 85% 73%;
+    --hover-glow: 45 90% 85%;
     
     /* Semantic Tokens */
-    --background: var(--parchment);
-    --foreground: var(--earth-dark);
-    --card: var(--parchment-light);
-    --card-foreground: var(--earth);
-    --popover: var(--parchment-light);
-    --popover-foreground: var(--earth-dark);
-    --primary: var(--golden);
-    --primary-foreground: var(--earth-dark);
-    --secondary: var(--sage-light);
-    --secondary-foreground: var(--earth-dark);
-    --muted: var(--sage-light);
-    --muted-foreground: var(--earth);
-    --accent: var(--golden-light);
-    --accent-foreground: var(--earth-dark);
+    --background: var(--ivory-sand);
+    --foreground: var(--deep-charcoal);
+    --card: var(--light-almond);
+    --card-foreground: var(--deep-charcoal);
+    --popover: var(--light-almond);
+    --popover-foreground: var(--deep-charcoal);
+    --primary: var(--saffron-gold);
+    --primary-foreground: var(--ivory-sand);
+    --secondary: var(--sage-green);
+    --secondary-foreground: var(--ivory-sand);
+    --muted: var(--chip-bg);
+    --muted-foreground: var(--deep-charcoal);
+    --accent: var(--saffron-gold);
+    --accent-foreground: var(--earth-brown);
     --destructive: 0 65% 55%;
     --destructive-foreground: var(--parchment-light);
-    --border: var(--sage-light);
-    --input: var(--parchment-light);
-    --ring: var(--golden);
+    --border: var(--chip-bg);
+    --input: var(--light-almond);
+    --ring: var(--saffron-gold);
     
     /* Spiritual Design Elements */
-    --gradient-spiritual: linear-gradient(135deg, hsl(var(--golden-light)) 0%, hsl(var(--sage-light)) 50%, hsl(var(--parchment)) 100%);
-    --gradient-enlightenment: radial-gradient(circle, hsl(var(--golden-glow) / 0.3) 0%, hsl(var(--golden) / 0.1) 70%, transparent 100%);
-    --gradient-peace: linear-gradient(180deg, hsl(var(--sage-light)) 0%, hsl(var(--parchment)) 100%);
-    --shadow-soft: 0 4px 20px hsl(var(--sage) / 0.15);
-    --shadow-divine: 0 8px 32px hsl(var(--golden) / 0.2);
-    --shadow-wisdom: 0 12px 40px hsl(var(--earth) / 0.1);
+    --gradient-spiritual: linear-gradient(135deg, hsl(var(--cta-start)) 0%, hsl(var(--cta-end)) 100%);
+    --gradient-enlightenment: radial-gradient(circle, hsl(var(--saffron-gold) / 0.2) 0%, hsl(var(--saffron-gold) / 0.1) 70%, transparent 100%);
+    --gradient-peace: radial-gradient(circle at center, hsl(var(--ivory-sand)) 60%, hsl(var(--soft-parchment)) 100%);
+    --shadow-soft: 0 4px 20px hsl(var(--sage-green) / 0.15);
+    --shadow-divine: 0 4px 10px hsl(var(--saffron-gold) / 0.2);
+    --shadow-wisdom: 0 6px 12px hsl(var(--saffron-gold) / 0.4);
     
     --radius: 1rem;
     --transition-peaceful: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    --parchment: 25 15% 8%;
-    --parchment-light: 25 10% 12%;
-    --golden: 45 85% 60%;
-    --sage: 195 20% 40%;
-    --earth: 25 25% 75%;
-    --background: var(--parchment);
-    --foreground: var(--earth);
-    --card: var(--parchment-light);
-    --card-foreground: var(--earth);
+    --ivory-sand: 25 15% 8%;
+    --soft-parchment: 25 10% 12%;
+    --saffron-gold: 45 85% 60%;
+    --sage-green: 195 20% 40%;
+    --deep-charcoal: 25 25% 75%;
+    --light-almond: 25 10% 15%;
+    --background: var(--ivory-sand);
+    --foreground: var(--deep-charcoal);
+    --card: var(--light-almond);
+    --card-foreground: var(--deep-charcoal);
   }
 }
 
@@ -121,25 +122,28 @@
 
   /* Button Variants */
   .btn-spiritual {
-    @apply bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium;
+    @apply px-6 py-3 rounded-xl font-bold font-spiritual;
     background: var(--gradient-spiritual);
+    color: hsl(var(--earth-brown));
     box-shadow: var(--shadow-divine);
     transition: var(--transition-peaceful);
   }
 
   .btn-spiritual:hover {
-    @apply shadow-[var(--shadow-wisdom)];
-    transform: translateY(-1px) scale(1.02);
+    box-shadow: var(--shadow-wisdom);
+    transform: translateY(-2px);
   }
 
   .btn-peace {
-    @apply bg-secondary text-secondary-foreground px-4 py-2 rounded-lg;
+    @apply px-4 py-2 rounded-lg font-medium;
+    background: hsl(var(--chip-bg));
+    color: hsl(var(--saffron-gold));
     transition: var(--transition-peaceful);
   }
 
   .btn-peace:hover {
-    @apply bg-secondary/80;
-    transform: translateY(-1px);
+    @apply shadow-md;
+    transform: translateY(-1px) scale(1.02);
   }
 
   /* Floating Animation */

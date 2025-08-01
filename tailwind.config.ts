@@ -56,26 +56,18 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Spiritual palette
-				parchment: {
-					DEFAULT: 'hsl(var(--parchment))',
-					light: 'hsl(var(--parchment-light))'
-				},
-				golden: {
-					DEFAULT: 'hsl(var(--golden))',
-					light: 'hsl(var(--golden-light))',
-					glow: 'hsl(var(--golden-glow))'
-				},
-				sage: {
-					DEFAULT: 'hsl(var(--sage))',
-					light: 'hsl(var(--sage-light))',
-					dark: 'hsl(var(--sage-dark))'
-				},
-				earth: {
-					DEFAULT: 'hsl(var(--earth))',
-					light: 'hsl(var(--earth-light))',
-					dark: 'hsl(var(--earth-dark))'
-				}
+				// Refined spiritual palette
+				'ivory-sand': 'hsl(var(--ivory-sand))',
+				'soft-parchment': 'hsl(var(--soft-parchment))',
+				'saffron-gold': 'hsl(var(--saffron-gold))',
+				'sage-green': 'hsl(var(--sage-green))',
+				'deep-charcoal': 'hsl(var(--deep-charcoal))',
+				'earth-brown': 'hsl(var(--earth-brown))',
+				'light-almond': 'hsl(var(--light-almond))',
+				'chip-bg': 'hsl(var(--chip-bg))',
+				'cta-start': 'hsl(var(--cta-start))',
+				'cta-end': 'hsl(var(--cta-end))',
+				'hover-glow': 'hsl(var(--hover-glow))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
