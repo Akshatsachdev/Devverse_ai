@@ -18,6 +18,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'spiritual': ['Rasa', 'serif'],
+				'body': ['Inter', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -52,15 +56,25 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				// Spiritual palette
+				parchment: {
+					DEFAULT: 'hsl(var(--parchment))',
+					light: 'hsl(var(--parchment-light))'
+				},
+				golden: {
+					DEFAULT: 'hsl(var(--golden))',
+					light: 'hsl(var(--golden-light))',
+					glow: 'hsl(var(--golden-glow))'
+				},
+				sage: {
+					DEFAULT: 'hsl(var(--sage))',
+					light: 'hsl(var(--sage-light))',
+					dark: 'hsl(var(--sage-dark))'
+				},
+				earth: {
+					DEFAULT: 'hsl(var(--earth))',
+					light: 'hsl(var(--earth-light))',
+					dark: 'hsl(var(--earth-dark))'
 				}
 			},
 			borderRadius: {
@@ -70,25 +84,39 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
+				},
+				'float-gentle': {
+					'0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+					'50%': { transform: 'translateY(-10px) rotate(2deg)' }
+				},
+				'float-petals': {
+					'0%, 100%': { transform: 'translateY(0px) translateX(0px) rotate(0deg)', opacity: '0.7' },
+					'25%': { transform: 'translateY(-8px) translateX(2px) rotate(90deg)', opacity: '1' },
+					'50%': { transform: 'translateY(-15px) translateX(0px) rotate(180deg)', opacity: '0.8' },
+					'75%': { transform: 'translateY(-8px) translateX(-2px) rotate(270deg)', opacity: '1' }
+				},
+				'glow-pulse': {
+					'0%, 100%': { boxShadow: 'var(--shadow-divine)' },
+					'50%': { boxShadow: 'var(--shadow-wisdom)' }
+				},
+				'om-spin': {
+					from: { transform: 'rotate(0deg)' },
+					to: { transform: 'rotate(360deg)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float-gentle': 'float-gentle 6s ease-in-out infinite',
+				'float-petals': 'float-petals 8s ease-in-out infinite',
+				'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
+				'om-spin': 'om-spin 20s linear infinite'
 			}
 		}
 	},
