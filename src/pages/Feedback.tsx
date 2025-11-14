@@ -2,11 +2,25 @@ import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import FloatingElements from "@/components/FloatingElements";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Feedback = () => {
-  const [feedback, setFeedback] = useState("");
-  const [rating, setRating] = useState<number | null>(null);
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [feedback, setFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -14,27 +28,43 @@ const Feedback = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API submission
-    setTimeout(() => {
+    try {
+      const { error } = await supabase.functions.invoke('send-feedback', {
+        body: {
+          name,
+          age,
+          gender,
+          email,
+          phone,
+          feedback,
+        },
+      });
+
+      if (error) throw error;
+
       toast({
         title: "Thank you for helping Devverse grow! 🙏",
         description: "Your feedback helps us serve the spiritual community better.",
       });
       
-      setFeedback("");
-      setRating(null);
+      // Reset form
+      setName("");
+      setAge("");
+      setGender("");
       setEmail("");
+      setPhone("");
+      setFeedback("");
+    } catch (error) {
+      console.error("Error sending feedback:", error);
+      toast({
+        title: "Error sending feedback",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
-
-  const ratingOptions = [
-    { value: 1, emoji: "😞", label: "Not helpful" },
-    { value: 2, emoji: "😐", label: "Somewhat helpful" },
-    { value: 3, emoji: "🙂", label: "Helpful" },
-    { value: 4, emoji: "😊", label: "Very helpful" },
-    { value: 5, emoji: "🤩", label: "Extremely helpful" }
-  ];
 
   return (
     <div className="min-h-screen relative">
@@ -58,68 +88,110 @@ const Feedback = () => {
           {/* Feedback Form */}
           <div className="divine-card p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Rating */}
+              {/* Name */}
               <div>
-                <label className="block text-lg font-spiritual font-medium text-foreground mb-4">
-                  How helpful was your experience?
-                </label>
-                <div className="flex justify-center space-x-4">
-                  {ratingOptions.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => setRating(option.value)}
-                      className={`flex flex-col items-center p-3 rounded-lg transition-all ${
-                        rating === option.value
-                          ? "bg-primary/20 text-primary scale-110"
-                          : "bg-secondary/50 hover:bg-secondary/70"
-                      }`}
-                    >
-                      <span className="text-2xl mb-1">{option.emoji}</span>
-                      <span className="text-xs text-center">{option.label}</span>
-                    </button>
-                  ))}
-                </div>
+                <Label htmlFor="name" className="text-lg font-spiritual font-medium">
+                  Name *
+                </Label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your full name"
+                  required
+                  className="mt-2"
+                />
+              </div>
+
+              {/* Age */}
+              <div>
+                <Label htmlFor="age" className="text-lg font-spiritual font-medium">
+                  Age *
+                </Label>
+                <Input
+                  id="age"
+                  type="number"
+                  min="1"
+                  max="120"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  placeholder="Your age"
+                  required
+                  className="mt-2"
+                />
+              </div>
+
+              {/* Gender */}
+              <div>
+                <Label htmlFor="gender" className="text-lg font-spiritual font-medium">
+                  Gender *
+                </Label>
+                <Select value={gender} onValueChange={setGender} required>
+                  <SelectTrigger className="mt-2">
+                    <SelectValue placeholder="Select your gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Email */}
+              <div>
+                <Label htmlFor="email" className="text-lg font-spiritual font-medium">
+                  Email *
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  required
+                  className="mt-2"
+                />
+              </div>
+
+              {/* Phone Number */}
+              <div>
+                <Label htmlFor="phone" className="text-lg font-spiritual font-medium">
+                  Phone Number *
+                </Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+1 (555) 000-0000"
+                  required
+                  className="mt-2"
+                />
               </div>
 
               {/* Feedback Text */}
               <div>
-                <label htmlFor="feedback" className="block text-lg font-spiritual font-medium text-foreground mb-3">
-                  Tell us about your journey
-                </label>
-                <textarea
+                <Label htmlFor="feedback" className="text-lg font-spiritual font-medium">
+                  Feedback *
+                </Label>
+                <Textarea
                   id="feedback"
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
                   placeholder="Share your thoughts, suggestions, or how Devverse AI has helped you on your spiritual path..."
-                  className="w-full h-32 p-4 rounded-lg border border-border bg-input focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"
+                  className="mt-2 min-h-[120px]"
                   required
                 />
               </div>
 
-              {/* Email (Optional) */}
-              <div>
-                <label htmlFor="email" className="block text-lg font-spiritual font-medium text-foreground mb-3">
-                  Email (optional)
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  className="w-full p-4 rounded-lg border border-border bg-input focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                />
-                <p className="text-sm text-muted-foreground mt-2">
-                  Leave your email if you'd like us to follow up with you
-                </p>
-              </div>
-
               {/* Submit Button */}
-              <div className="text-center">
+              <div className="text-center pt-4">
                 <button
                   type="submit"
-                  disabled={isSubmitting || !feedback.trim()}
+                  disabled={isSubmitting || !feedback.trim() || !name.trim() || !age || !gender || !email.trim() || !phone.trim()}
                   className="btn-spiritual text-lg px-8 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
@@ -133,40 +205,6 @@ const Feedback = () => {
                 </button>
               </div>
             </form>
-          </div>
-
-          {/* Quick Feedback Buttons */}
-          <div className="mt-8">
-            <h3 className="text-xl font-spiritual font-bold text-center text-primary mb-4">
-              Quick Feedback
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <button
-                onClick={() => {
-                  toast({
-                    title: "Thank you! 👍",
-                    description: "We're glad Devverse AI was helpful!",
-                  });
-                }}
-                className="divine-card p-4 text-center hover:scale-105 transition-transform"
-              >
-                <div className="text-3xl mb-2">👍</div>
-                <span className="font-medium">This response was helpful</span>
-              </button>
-              
-              <button
-                onClick={() => {
-                  toast({
-                    title: "Thank you for the feedback 👎",
-                    description: "We'll work on improving our responses.",
-                  });
-                }}
-                className="divine-card p-4 text-center hover:scale-105 transition-transform"
-              >
-                <div className="text-3xl mb-2">👎</div>
-                <span className="font-medium">This response needs improvement</span>
-              </button>
-            </div>
           </div>
 
           {/* Community Note */}
