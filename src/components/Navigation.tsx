@@ -1,7 +1,32 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
 
 const Navigation = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [user, setUser] = useState<any>(null);
+  
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+    };
+
+    getUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
+  };
   
   const navItems = [
     { path: "/", label: "Home" },
@@ -40,6 +65,17 @@ const Navigation = () => {
               {item.label}
             </Link>
           ))}
+          {user ? (
+            <Button onClick={handleLogout} variant="outline" size="sm">
+              Logout
+            </Button>
+          ) : (
+            <Link to="/login">
+              <Button variant="outline" size="sm">
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
 
         <div className="md:hidden">

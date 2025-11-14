@@ -1,7 +1,84 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import FloatingElements from "@/components/FloatingElements";
 import VerseCard from "@/components/VerseCard";
+import { Button } from "@/components/ui/button";
+
+const StartJourneyButton = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session) {
+        setIsAuthenticated(true);
+        
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+        
+        setIsAdmin(!!roleData);
+      }
+      
+      setLoading(false);
+    };
+
+    checkAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session) {
+        setIsAuthenticated(true);
+        
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', session.user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+        
+        setIsAdmin(!!roleData);
+      } else {
+        setIsAuthenticated(false);
+        setIsAdmin(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleClick = () => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    } else if (isAdmin) {
+      navigate('/admin');
+    } else {
+      navigate('/dashboard');
+    }
+  };
+
+  if (loading) {
+    return (
+      <Button className="btn-spiritual text-lg" disabled>
+        Loading...
+      </Button>
+    );
+  }
+
+  return (
+    <Button onClick={handleClick} className="btn-spiritual text-lg">
+      Start Your Journey
+    </Button>
+  );
+};
 
 const Index = () => {
   const sampleQuestions = [
@@ -41,9 +118,7 @@ const Index = () => {
               "When life feels heavy, the Gita speaks"
             </p>
             
-            <Link to="/chat" className="btn-spiritual text-lg">
-              Start Your Journey
-            </Link>
+            <StartJourneyButton />
           </section>
 
           {/* About Section */}
