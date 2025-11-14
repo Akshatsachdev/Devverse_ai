@@ -10,6 +10,7 @@ const corsHeaders = {
 };
 
 interface FeedbackRequest {
+  userId: string;
   name: string;
   age: string;
   gender: string;
@@ -25,7 +26,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { name, age, gender, email, phone, feedback }: FeedbackRequest = await req.json();
+    const { userId, name, age, gender, email, phone, feedback }: FeedbackRequest = await req.json();
 
     console.log("Sending feedback email from:", email);
 
@@ -40,6 +41,7 @@ const handler = async (req: Request): Promise<Response> => {
           
           <div style="background-color: #fffaf0; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #c6a700;">
             <h2 style="color: #442c1c; margin-top: 0;">User Information</h2>
+            <p style="margin: 8px 0;"><strong>User ID:</strong> ${userId}</p>
             <p style="margin: 8px 0;"><strong>Name:</strong> ${name}</p>
             <p style="margin: 8px 0;"><strong>Age:</strong> ${age}</p>
             <p style="margin: 8px 0;"><strong>Gender:</strong> ${gender}</p>

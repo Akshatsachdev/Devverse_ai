@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import FloatingElements from "@/components/FloatingElements";
 import { useToast } from "@/hooks/use-toast";
@@ -6,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -15,6 +17,7 @@ import {
 } from "@/components/ui/select";
 
 const Feedback = () => {
+  const [userId, setUserId] = useState("");
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
@@ -23,6 +26,41 @@ const Feedback = () => {
   const [feedback, setFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast({
+          title: "Please login",
+          description: "You need to be logged in to submit feedback.",
+          variant: "destructive",
+        });
+        navigate('/login');
+        return;
+      }
+
+      setUserId(session.user.id);
+      setEmail(session.user.email || "");
+
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (profileData) {
+        setName(profileData.name || "");
+        setAge(profileData.age?.toString() || "");
+        setGender(profileData.gender || "");
+        setPhone(profileData.phone || "");
+      }
+    };
+
+    getUserData();
+  }, [navigate, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +69,7 @@ const Feedback = () => {
     try {
       const { error } = await supabase.functions.invoke('send-feedback', {
         body: {
+          userId,
           name,
           age,
           gender,
@@ -47,12 +86,6 @@ const Feedback = () => {
         description: "Your feedback helps us serve the spiritual community better.",
       });
       
-      // Reset form
-      setName("");
-      setAge("");
-      setGender("");
-      setEmail("");
-      setPhone("");
       setFeedback("");
     } catch (error) {
       console.error("Error sending feedback:", error);
@@ -88,6 +121,20 @@ const Feedback = () => {
           {/* Feedback Form */}
           <div className="divine-card p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* User ID */}
+              <div>
+                <Label htmlFor="userId" className="text-lg font-spiritual font-medium">
+                  User ID
+                </Label>
+                <Input
+                  id="userId"
+                  type="text"
+                  value={userId}
+                  disabled
+                  className="mt-2 bg-muted"
+                />
+              </div>
+
               {/* Name */}
               <div>
                 <Label htmlFor="name" className="text-lg font-spiritual font-medium">
@@ -127,7 +174,11 @@ const Feedback = () => {
                 <Label htmlFor="gender" className="text-lg font-spiritual font-medium">
                   Gender *
                 </Label>
-                <Select value={gender} onValueChange={setGender} required>
+                <Select 
+                  value={gender} 
+                  onValueChange={setGender} 
+                  required
+                >
                   <SelectTrigger className="mt-2">
                     <SelectValue placeholder="Select your gender" />
                   </SelectTrigger>
@@ -135,7 +186,6 @@ const Feedback = () => {
                     <SelectItem value="male">Male</SelectItem>
                     <SelectItem value="female">Female</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
-                    <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -150,13 +200,13 @@ const Feedback = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
+                  placeholder="your.email@example.com"
                   required
                   className="mt-2"
                 />
               </div>
 
-              {/* Phone Number */}
+              {/* Phone */}
               <div>
                 <Label htmlFor="phone" className="text-lg font-spiritual font-medium">
                   Phone Number *
@@ -172,52 +222,45 @@ const Feedback = () => {
                 />
               </div>
 
-              {/* Feedback Text */}
+              {/* Feedback */}
               <div>
                 <Label htmlFor="feedback" className="text-lg font-spiritual font-medium">
-                  Feedback *
+                  Your Feedback *
                 </Label>
                 <Textarea
                   id="feedback"
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
-                  placeholder="Share your thoughts, suggestions, or how Devverse AI has helped you on your spiritual path..."
-                  className="mt-2 min-h-[120px]"
+                  placeholder="Share your thoughts, suggestions, or experiences with Devverse AI..."
                   required
+                  rows={6}
+                  className="mt-2 resize-none"
                 />
               </div>
 
               {/* Submit Button */}
-              <div className="text-center pt-4">
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !feedback.trim() || !name.trim() || !age || !gender || !email.trim() || !phone.trim()}
-                  className="btn-spiritual text-lg px-8 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
-                    <span className="flex items-center space-x-2">
-                      <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
-                      <span>Sending...</span>
-                    </span>
-                  ) : (
-                    "Send Feedback"
-                  )}
-                </button>
-              </div>
+              <Button
+                type="submit"
+                disabled={isSubmitting || !feedback}
+                className="w-full btn-spiritual text-lg"
+              >
+                {isSubmitting ? "Sending..." : "Send Feedback"}
+              </Button>
             </form>
           </div>
 
-          {/* Community Note */}
-          <div className="divine-card p-6 mt-8 text-center">
-            <div className="text-4xl mb-3">🌟</div>
-            <h3 className="font-spiritual font-bold text-primary mb-2">
-              Building Together
-            </h3>
-            <p className="text-muted-foreground">
-              Devverse AI grows stronger with each piece of feedback from our spiritual community. 
-              Together, we're making ancient wisdom accessible to all.
-            </p>
-          </div>
+          {/* Building Together Section */}
+          <section className="mt-12 text-center pb-16">
+            <div className="divine-card p-8">
+              <h2 className="text-2xl font-spiritual font-bold text-primary mb-4">
+                Building Together
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Every piece of feedback helps us create a better spiritual experience. 
+                Your voice matters in shaping the future of Devverse AI.
+              </p>
+            </div>
+          </section>
         </div>
       </div>
     </div>
