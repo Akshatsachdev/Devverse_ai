@@ -5,6 +5,7 @@ import Navigation from "@/components/Navigation";
 import FloatingElements from "@/components/FloatingElements";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import ContentEditor from "@/components/ContentEditor";
 
 const Admin = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -128,10 +129,11 @@ const Admin = () => {
             <CardTitle className="text-2xl">Content Editing</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">
-              Content editing functionality coming soon. You'll be able to edit quotes, 
-              verses, and other content directly from this panel.
-            </p>
+            {loading ? (
+              <p className="text-center">Loading content...</p>
+            ) : (
+              <ContentEditor />
+            )}
           </CardContent>
         </Card>
       </div>
