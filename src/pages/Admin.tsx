@@ -5,11 +5,15 @@ import Navigation from "@/components/Navigation";
 import FloatingElements from "@/components/FloatingElements";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import ContentEditor from "@/components/ContentEditor";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const Admin = () => {
   const [users, setUsers] = useState<any[]>([]);
+  const [content, setContent] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingContent, setEditingContent] = useState<{[key: string]: string}>({});
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -65,12 +69,67 @@ const Admin = () => {
         );
         setUsers(usersWithEmails);
       }
+
+      // Fetch all editable content
+      const { data: contentData, error: contentError } = await supabase
+        .from('content')
+        .select('*')
+        .order('category', { ascending: true });
+
+      if (contentError) {
+        toast({
+          title: "Error fetching content",
+          description: contentError.message,
+          variant: "destructive",
+        });
+      } else {
+        setContent(contentData || []);
+        // Initialize editing state
+        const initialEditing: {[key: string]: string} = {};
+        contentData?.forEach((item) => {
+          initialEditing[item.id] = item.value;
+        });
+        setEditingContent(initialEditing);
+      }
       
       setLoading(false);
     };
 
     checkAdminAndFetchUsers();
   }, [navigate, toast]);
+
+  const handleContentUpdate = async (id: string, key: string) => {
+    const newValue = editingContent[id];
+    
+    const { error } = await supabase
+      .from('content')
+      .update({ value: newValue })
+      .eq('id', id);
+
+    if (error) {
+      toast({
+        title: "Error updating content",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Content updated",
+        description: `Successfully updated ${key}`,
+      });
+      // Update local state
+      setContent(content.map(item => 
+        item.id === id ? { ...item, value: newValue } : item
+      ));
+    }
+  };
+
+  const handleContentChange = (id: string, value: string) => {
+    setEditingContent({
+      ...editingContent,
+      [id]: value
+    });
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -131,8 +190,48 @@ const Admin = () => {
           <CardContent>
             {loading ? (
               <p className="text-center">Loading content...</p>
+            ) : content.length === 0 ? (
+              <p className="text-center text-muted-foreground">No content found.</p>
             ) : (
-              <ContentEditor />
+              <div className="space-y-6">
+                {content.map((item) => (
+                  <div key={item.id} className="border border-border rounded-lg p-4">
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-sm font-semibold text-primary">
+                          {item.key}
+                        </label>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          {item.description} • Category: {item.category}
+                        </p>
+                      </div>
+                      
+                      {item.value.length > 100 ? (
+                        <Textarea
+                          value={editingContent[item.id] || ''}
+                          onChange={(e) => handleContentChange(item.id, e.target.value)}
+                          className="min-h-[100px]"
+                        />
+                      ) : (
+                        <Input
+                          value={editingContent[item.id] || ''}
+                          onChange={(e) => handleContentChange(item.id, e.target.value)}
+                        />
+                      )}
+                      
+                      <div className="flex justify-end">
+                        <Button
+                          onClick={() => handleContentUpdate(item.id, item.key)}
+                          disabled={editingContent[item.id] === item.value}
+                          className="btn-spiritual"
+                        >
+                          Save Changes
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </CardContent>
         </Card>
