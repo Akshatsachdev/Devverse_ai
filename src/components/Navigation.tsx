@@ -63,6 +63,11 @@ const Navigation = () => {
     { path: "/about", label: "About" },
   ];
 
+  const userNavItems = user ? [
+    ...(isAdmin ? [{ path: "/admin", label: "Admin Panel" }] : []),
+    { path: "/dashboard", label: "Dashboard" },
+  ] : [];
+
   return (
     <nav className="divine-card p-4 mb-8">
       <div className="container mx-auto flex items-center justify-between">
