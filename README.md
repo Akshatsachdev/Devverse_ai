@@ -1,73 +1,135 @@
-# Welcome to your Lovable project
+# 🌌 Devverse AI — Bhagavad Gita Chatbot (Demo Web App)
 
-## Project info
+**Devverse AI** is a **demo web application** that showcases how modern AI can be used to deliver contextual, conversational insights inspired by the *Bhagavad Gita*.
 
-**URL**: https://lovable.dev/projects/c7da5052-0fd3-4cdf-84ba-f1a595ba8a9f
+This project is built as an **ideal portfolio demo**, focusing on:
 
-## How can I edit this code?
+* Clean UI
+* Clear AI interaction flow
+* Practical full-stack integration
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+🔗 Demo
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c7da5052-0fd3-4cdf-84ba-f1a595ba8a9f) and start prompting.
+🔗 https://devverse-ai.netlify.app/
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## 🔍 Project Overview
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Devverse AI allows users to:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+* Ask life-related or philosophical questions
+* Receive AI-generated responses inspired by Bhagavad Gita teachings
+* Interact through a simple, responsive chat interface
 
-Follow these steps:
+> ⚠️ This is a **demonstration project** intended for learning, showcasing, and portfolio presentation.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## ✨ Demo Features
 
-# Step 3: Install the necessary dependencies.
-npm i
+* 💬 **Chat-based Interface**
+  Simple conversational UI for asking questions
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+* 🧠 **AI-powered Responses**
+  Uses a language model to generate thoughtful, contextual replies
+
+* 📖 **Gita-inspired Guidance**
+  Responses are framed around themes from the Bhagavad Gita
+
+* 📱 **Responsive Design**
+  Works smoothly across desktop and mobile screens
+
+* ⚡ **Fast Setup & Lightweight**
+  Minimal dependencies and clean project structure
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer      | Technology                        |
+| ---------- | --------------------------------- |
+| Frontend   | React, Tailwind CSS               |
+| Backend    | Python (Flask / FastAPI)          |
+| AI         | LLM API / Open-source transformer |
+| Database   | SQLite (optional / demo use)      |
+| Deployment | Netlify / Vercel / Render         |
+
+---
+
+## 🧠 How the Demo Works
+
+1. User enters a question in the chat UI
+2. Frontend sends the query to the backend API
+3. Backend prepares a structured AI prompt
+4. AI model generates a response inspired by Gita teachings
+5. Response is displayed in the chat interface
+
+---
+
+## 🚀 Local Setup (Demo)
+
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🧪 Example Use Cases
 
-**Use GitHub Codespaces**
+* “How can I deal with fear and anxiety?”
+* “What does the Gita say about duty?”
+* “How should I handle failure in life?”
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## 📌 Scope & Limitations
 
-This project is built with:
+This project is intentionally limited to:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+* Single-user demo usage
+* No authentication
+* No permanent conversation storage
+* No theological authority claims
 
-## How can I deploy this project?
+It is designed **only as a demo AI application**, not a production spiritual advisory system.
 
-Simply open [Lovable](https://lovable.dev/projects/c7da5052-0fd3-4cdf-84ba-f1a595ba8a9f) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+## 🎯 Why This Project?
 
-Yes, you can!
+This demo was built to:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+* Practice full-stack AI integration
+* Demonstrate chatbot architecture
+* Explore prompt design and AI UX
+* Create a meaningful, portfolio-ready web app
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+---
+
+## 🔮 Possible Enhancements (Future)
+
+* Multi-language support (English / Hindi)
+* Verse reference display
+* Topic-based question suggestions
+* Conversation history per session
+* Voice input/output (speech-to-text)
+
+---
+
+## 📜 Disclaimer
+
+Devverse AI provides **AI-generated interpretations** inspired by the Bhagavad Gita.
+It is **not a substitute** for traditional study, scholarly interpretation, or personal spiritual guidance.
+
+---
+
+## 👤 Author
+
+**Akshat Sachdeva**
+
+* GitHub: [https://github.com/Akshatsachdev](https://github.com/Akshatsachdev)
+* LinkedIn: [https://www.linkedin.com/in/ak0011](https://www.linkedin.com/in/ak0011)
