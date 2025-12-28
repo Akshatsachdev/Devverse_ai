@@ -156,7 +156,7 @@ const About = () => {
               We'd love to hear about your spiritual journey and how Devverse AI has helped you.
             </p>
             <div className="space-x-4">
-              <a href="https://github.com/Akshatsachdev" target="_blank" rel="noopener noreferrer" className="btn-spiritual">
+              <a href="https://github.com/Akshatsachdev/Devverse_ai" target="_blank" rel="noopener noreferrer" className="btn-spiritual">
                 View on GitHub
               </a>
               <a href="/feedback" className="btn-peace">
