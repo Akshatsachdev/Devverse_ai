@@ -197,8 +197,9 @@ const Index = () => {
             <div className="spiritual-divider my-8"></div>
             
             <p className="text-muted-foreground">
-              © 2024 Devverse AI. Bringing ancient wisdom to modern minds.
+              © 2025 Devverse AI. Bringing ancient wisdom to modern minds. 
             </p>
+            Made with ❤️ by SachdevaVerse.
           </footer>
         </div>
       </div>

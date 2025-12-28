@@ -167,7 +167,7 @@ const About = () => {
             <div className="spiritual-divider my-8"></div>
             
             <p className="text-sm text-muted-foreground">
-              Created with 🙏 for spiritual seekers everywhere
+              Created with ❤️ for spiritual seekers everywhere
             </p>
           </section>
         </div>
